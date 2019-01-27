@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom';
+import axios from 'axios'
 
 const ShowContacts = (props) => {
     //console.log('ShowContcacts props ', props)  
@@ -36,15 +37,20 @@ const SearchForm = ({searchTerm, handleSeachTermChange}) => {
 }
 
 const App = () => {
-    const [persons, setPersons] = useState([
-        { name: 'Arto Hellas', number: '040-123456' },
-        { name: 'Martti Tienari', number: '040-123456' },
-        { name: 'Arto Järvinen', number: '040-123456' },
-        { name: 'Lea Kutvonen', number: '040-123456' }
-      ]) 
-  const [ newName, setNewName ] = useState('')
-  const [ newNumber, setNewNumber] = useState('');
-  const [ searchTerm, setSearchTerm] = useState('')
+    const [persons, setPersons] = useState([]) 
+    const [ newName, setNewName ] = useState('')
+    const [ newNumber, setNewNumber] = useState('');
+    const [ searchTerm, setSearchTerm] = useState('')
+
+    useEffect(()=>{
+        const promise = axios.get('http://localhost:3001/persons')
+        promise.then(response => {
+        //console.log('response', response)
+        //console.log('response data', response.data)
+        setPersons(response.data)
+        })
+    }, [])
+  
 
   const addContact = (event) => {
     event.preventDefault()
