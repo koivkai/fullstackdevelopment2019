@@ -9,67 +9,79 @@ const Header = props => {
 }
 
 const Content = (props) => {
-console.log('content', props)
-console.log('props.course', props.course)
-const courseTable = props.course.parts
-const courses = courseTable.map(course => <li key={course.name}>{course.name} {course.exercises}</li>)
-console.log('courseS', courses)
+console.log('content props', props)
+const a = props.parts
+console.log('a ', a)
+
+const p = a.map((part)=><li key={part.id}>{Part(part)}</li>)
+
   return (
     <>
       <ul>
-        {courses}
+        {p}
       </ul>
     </>
   )
 }
 
+const Part = (props) => {
+    console.log('Part props ', props)
+
+    return(
+      <>{props.name}</>
+    )
+}
+
 const Total = (props) => {
  
-  const parts = props.course.parts
-  console.log('total course', parts)
+  console.log('total props ', props)
+  const c = props.courseContents
+  console.log('c ', c)
 
-  const total = parts.reduce( (initial, {exercises}) => {
+  const total = c.reduce( (initial, {exercises}) => {
     console.log('yhteensä nyt ', initial.exercises, 'seuraava ', exercises)
     return {exercises: initial.exercises + exercises}
   },{exercises: 0})
 
-  console.log('total', total)
+  console.log('total', total)  
   return (
     <p>yhteensä {total.exercises} tähtävää</p>
   )
 }
 
-const Course = ({course}) => {
-  console.log('course', course)
-  console.log('name',course.name)
+const Course = (props) => {
+  console.log('Course props', props)
+  
     return (
       <>   
-        <Header name={course.name} />
-        <Content course={course}/>
-        <Total course={course} />
+      
+        <Header name={props.name} />
+        <Content parts={props.parts} />
+        <Total courseContents={props.parts} />
+      
       </>
     )
 }
 
-const App = () => {
-  const course = {
-    name: 'Half Stack -sovelluskehitys',
-    parts: [
-      {
-        name: 'Reactin perusteet',
-        exercises: 10
-      },
-      {
-        name: 'Tiedonvälitys propseilla',
-        exercises: 7
-      },
-      {
-        name: 'Komponenttien tila',
-        exercises: 14
-      }
-    ]
-  }
+const Courses = ({courses}) => {
+  console.log('kurssit ',courses)
 
+  const x = courses.map((course)=><li key={course.id}>{Course(course)}</li>)
+  
+    
+  
+  return (
+    <ul>
+      
+        {x}
+      
+    </ul>
+  )
+
+
+}
+
+const App = () => {
   const courses = [
     {
       name: 'Half Stack -sovelluskehitys',
@@ -110,11 +122,9 @@ const App = () => {
     }
   ]
 
-  console.log('courses', courses)
-
   return (
-    <div>
-      <Course course={course} />
+    <div>    
+      <Courses courses={courses} />
     </div>
   )
 }
