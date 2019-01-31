@@ -1,28 +1,111 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react'
+import ReactDOM from 'react-dom';
+import axios from 'axios'
+import Contact from './components/Contact'
+import contactServices from './services/contacts'
+import './index.css'
+import PersonForm from './components/PersonForm'
+import SearchForm from './components/SearchForm'
+import Notification from './components/Notification'
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+const App = () => {
+    const [persons, setPersons] = useState([]) 
+    const [ newName, setNewName ] = useState('')
+    const [ newNumber, setNewNumber] = useState('');
+    const [ searchTerm, setSearchTerm] = useState('')
+    const [currentNotification, setNotification] = useState(null)
+
+    useEffect(()=>{
+        contactServices
+        .getAll()
+        .then(existingContacts => {
+            setPersons(existingContacts)
+        })
+    }, [])
+  
+
+  const addContact = (event) => {
+    event.preventDefault()
+
+    const contactObject = {
+        name: newName,
+        number: newNumber,
+       // id : persons.length +1
+    }   
+   
+    const inc = persons.filter(c => c.name === newName).length
+    
+    if(inc<=0) {
+        contactServices
+        .create(contactObject)
+        .then(returnedContact => {
+            setPersons(persons.concat(returnedContact))
+            setNotification(`Lisättiin henkilö ${contactObject.name}`)
+            setNewName('')
+            setNewNumber('')
+            setTimeout(() => {
+                setNotification(null)
+              }, 5000)
+            
+        })  
+    } else {
+        window.alert(`${newName} niminen henkilö on jo luettelossa`)
+        setNewName('')
+        setNewNumber('')
+        
+    }
+    //console.log('persons after', persons)
+    
   }
+
+  const contactsToShow = (searchTerm === '') 
+    ? persons : persons.filter(p => p.name.includes(searchTerm)) 
+
+  const handleNameChange = (event) => {
+    setNewName(event.target.value)
+  }
+  const handleNumberChange = (event) => {
+    setNewNumber(event.target.value)
+  }
+  const handleSeachTermChange = (event) => {
+    setSearchTerm(event.target.value)
+  }
+
+  const handleRemoveClick = (id) => {
+      return () => {
+        let name = persons.find(p => p.id === id).name
+        if (window.confirm(`Are you sure you wish to delete ${name}`)) { 
+            console.log('REMOVE id=', id, name)
+            contactServices.remove(id)
+            setPersons(persons.filter(p => p.id !== id))
+            setNotification(`Poistettiin henkilön ${name} tiedot`)
+            setTimeout(() => {
+                setNotification(null)
+              }, 5000)
+          }
+        
+      }
+          
+      
+  }
+
+  return (
+    <div>
+    <Notification message={currentNotification} />
+      <h2>Puhelinluettelo</h2>
+      <h3>Lisää uusi</h3>
+        <PersonForm addContact={addContact} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange}/>
+      <h3>Numerot</h3>
+        <SearchForm searchTerm={searchTerm} handleSeachTermChange={handleSeachTermChange} />
+      <ul>
+        {contactsToShow.map(contact => <Contact key={contact.id} contact={contact}  handleRemoveClick={handleRemoveClick(contact.id)}/> )}
+      </ul>
+    </div>
+  )
+
 }
 
-export default App;
+export default App
+
+
+
