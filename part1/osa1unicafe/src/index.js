@@ -24,6 +24,17 @@ const Statistics = ({ good, neutral, bad }) => {
     )
 }
 
+const Stats  = ({ good, neutral, bad , func }) => {
+    let g = good
+    return (
+        <>
+        {func(good=g,neutral,bad)}
+        </>
+    )
+}
+
+
+
 const Average = ({ good, neutral, bad }) => {
     let totalScore = good - bad
     let total = good + neutral + bad
@@ -43,6 +54,12 @@ const HowManyPositive = ({ good, neutral, bad }) => {
     ) 
 }
 
+const Button = ({ eventHandler, label}) => (
+    <button onClick={eventHandler}>
+        {label}
+    </button>
+)
+
 const App = (props) => {
     const [left, setLeft] = useState(0)
     const [right, setRight] = useState(0)
@@ -56,12 +73,16 @@ const App = (props) => {
       <div>   
         <div>
             <h1>anna palautetta</h1>
-            <button onClick={()=> setGood(good+1)}>hyvä</button>
-            <button onClick={()=> setNeutral(neutral+1)}>ok</button>
-            <button onClick={()=> setBad(bad+1)}>huono</button>
+            <Button eventHandler={()=> setGood(good+1)} label='hyvä' />
+            <Button eventHandler={()=> setNeutral(neutral+1)} label='ok' />
+            <Button eventHandler={()=> setBad(bad+1)} label='huono' />
         </div>
         <div>
             <Statistics good={good} neutral={neutral} bad={bad} />
+        </div>
+        <div>
+            <h1>Tulokset</h1>
+            <Stats good={good} neutral={neutral} bad={bad} func={Average()}/>
         </div>
       </div>
     )

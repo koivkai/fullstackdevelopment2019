@@ -26,7 +26,7 @@ const App = () => {
 
   const addContact = (event) => {
     event.preventDefault()
-
+    //console.log('persons before add', persons)
     const contactObject = {
         name: newName,
         number: newNumber,
@@ -47,11 +47,30 @@ const App = () => {
                 setNotification(null)
               }, 5000)
             
+        })
+        .catch(error => {
+          //console.log(error.response.data)
+          setNotification(`${error.response.data.error}`)
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
         })  
     } else {
-        window.alert(`${newName} niminen henkilö on jo luettelossa`)
-        setNewName('')
-        setNewNumber('')
+      if(window.confirm(`${newName} niminen henkilö on jo luettelossa, päivitetäänkö numero?`)) {
+        const personToUpdate = persons.find(p => p.name === newName)
+        console.log('persons to update', personToUpdate)
+        contactServices
+        .update(personToUpdate.id, contactObject)
+        .then(updatedContact => {
+          setPersons(persons.map(p => p.id !== personToUpdate.id ? p : updatedContact))
+          setNotification(`Päivitettiin henkilö ${updatedContact.name}`)
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
+        })
+      }
+      setNewName('')
+      setNewNumber('')
         
     }
     //console.log('persons after', persons)

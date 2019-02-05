@@ -1,5 +1,5 @@
 import axios from 'axios'
-const url = 'http://localhost:3001/persons'
+const url = '/api/persons'
 
 const getAll = () => {
   const request = axios.get(url)
@@ -8,6 +8,7 @@ const getAll = () => {
 
 const create = newObject => {
   const request = axios.post(url, newObject)
+  console.log('contacts create')
   return request.then(response => response.data)
 };
 
