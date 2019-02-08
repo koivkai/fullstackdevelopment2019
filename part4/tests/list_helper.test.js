@@ -99,3 +99,31 @@ describe('favoriteBlog', () => {
     expect(listHelper.favoriteBlog(manyBlogs)).toEqual(manyBlogs[2])
   })
 })
+
+describe('mostLikes', () => {
+  
+  test('when list has only one blog, blogd aouthor with blogs likes is returned', () => {
+    expect(listHelper.mostLikes(listWithOneBlog)).toEqual({
+      author: "Edsger W. Dijkstra",
+      likes: 5
+    })
+  })
+
+  test('is currect when given many blogs', () => {
+    expect(listHelper.mostLikes(manyBlogs)).toEqual({
+      author: "Edsger W. Dijkstra",
+      likes: 17
+    })
+  })
+})
+
+describe('mostBlogs', () => {
+
+  test('when list has one blog returns authors name and blogs 1', () => {
+    expect(listHelper.mostBlogs(listWithOneBlog)).toEqual({ author: "Edsger W. Dijkstra", blogs: 1 })
+  })
+
+  test('from many blogs is author with most blogs and currect number of blogs', () => {
+    expect(listHelper.mostBlogs(manyBlogs)).toEqual({ author: "Robert C. Martin", blogs: 3 })
+  })
+})
