@@ -44,9 +44,15 @@ test('blogs returned as json', async () => {
 
 test('all blogs are returned', async () => {
     const response = await api.get('/api/blogs')
+    //console.log('response body', response.body[0])
   
     expect(response.body.length).toBe(initialBlogs.length)
   })
+
+test('blogs have an id field', async () => {
+    const response = await api.get('/api/blogs')
+    expect(response.body[0].id).toBeDefined()
+})
   
 
 afterAll(() => {

@@ -3,18 +3,13 @@ const Blog = require('../models/blog')
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({})
+  //console.log('blogs returned', blogs)
   response.json(blogs)
-
-    /* Blog
-      .find({})
-      .then(blogs => {
-        response.json(blogs)
-      }) */
-  })
+})
   
   blogsRouter.post('/', (request, response) => {
     const blog = new Blog(request.body)
-      console.log('request body', request.body)
+    //console.log('request body', request.body)
     blog
       .save()
       .then(result => {
