@@ -7,14 +7,29 @@ blogsRouter.get('/', async (request, response) => {
   response.json(blogs)
 })
   
-  blogsRouter.post('/', (request, response) => {
+  blogsRouter.post('/', async (request, response) => {
     const blog = new Blog(request.body)
     //console.log('request body', request.body)
-    blog
+
+    const blogToAdd = new Blog({
+      title: blog.title,
+        author: blog.author === undefined ? '' : blog.author,
+        url: blog.url,
+        likes: blog.likes === undefined ? 0 : blog.likes
+    })
+
+    try {
+      const savedBlog = await blogToAdd.save()
+      response.status(201).json(savedBlog.toJSON())
+    } catch (exception) {
+      console.log('oh shit, post method encountered an error')
+    }
+
+    /* blog
       .save()
       .then(result => {
         response.status(201).json(result)
-      })
+      }) */
   })
 
   module.exports = blogsRouter

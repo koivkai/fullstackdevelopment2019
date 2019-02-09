@@ -53,6 +53,48 @@ test('blogs have an id field', async () => {
     const response = await api.get('/api/blogs')
     expect(response.body[0].id).toBeDefined()
 })
+
+test('posting a new blog adds a blog to database', async () => {
+    const newBlog = {
+        title: "Lord of the rings the blog",
+        author: "Elrond",
+        url: "wwww.internet.com/rivendell/blog",
+        likes: 101
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+
+    
+    
+    const response = await api.get('/api/blogs')
+    //koko olion matchaaminen ei onnistu koska alkuperäisessä ei ole tietokanna lisäämiä id ja _v kenttiä
+    expect(response.body[3].author).toBe('Elrond')
+
+})
+
+test('posting a blog with no like value gives that blog a like value of 0', async () => {
+    const newBlog = {
+        title: "Sarumans awesome mordor fan blog",
+        author: "Saruman the white",
+        url: "wwww.internet.com/isengard/myBlog",
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+
+    
+    
+    const response = await api.get('/api/blogs')
+    expect(response.body[3].likes).toBe(0)
+
+})
   
 
 afterAll(() => {
