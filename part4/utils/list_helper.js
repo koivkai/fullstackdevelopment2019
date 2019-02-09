@@ -43,7 +43,7 @@ const mostBlogs = (blogs) => {
         }
 
     },[])
-    console.log(bloggerStats)
+    //console.log(bloggerStats)
     let bloggerWithMostBlogs = bloggerStats.reduce((prev, current) => {
         if (current.blogs >= prev.blogs) {
             return current
