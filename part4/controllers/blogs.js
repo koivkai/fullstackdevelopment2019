@@ -32,4 +32,29 @@ blogsRouter.get('/', async (request, response) => {
       }) */
   })
 
+  blogsRouter.delete('/:id', async (request,response) => {
+    //console.log('päästiin delete kutsuun')
+    try{
+      //console.log('request params id', request.params.id)
+      await Blog.findByIdAndDelete(request.params.id)
+      response.status(204).end()
+    } catch (error) {
+      console.log('something went wrong with delete')
+    }
+  })
+
+  blogsRouter.put('/:id', (request, response) => {
+    //console.log('päästiin tänne')
+    const reqBody = request.body
+
+    const blogUpdate = {
+      likes : reqBody.likes
+    }
+
+    Blog.findByIdAndUpdate(request.params.id, blogUpdate, {new: true})
+      .then(updatedBlog => {
+        response.json(updatedBlog.toJSON)
+      })
+  })
+
   module.exports = blogsRouter
