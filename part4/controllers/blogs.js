@@ -21,8 +21,8 @@ blogsRouter.get('/', async (request, response) => {
     try {
       const savedBlog = await blogToAdd.save()
       response.status(201).json(savedBlog.toJSON())
-    } catch (exception) {
-      console.log('oh shit, post method encountered an error')
+    } catch (error) {
+      response.status(400).json({error: error.message})
     }
 
     /* blog
