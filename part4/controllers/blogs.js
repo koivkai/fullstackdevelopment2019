@@ -3,14 +3,6 @@ const Blog = require('../models/blog')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 
-const getTokenFrom = request => {
-  const authorization = request.get('authorization')
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    return authorization.substring(7)
-  }
-  return null
-}
-
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', {username: 1, name: 1})
   //console.log('blogs returned', blogs)
@@ -21,7 +13,7 @@ blogsRouter.get('/', async (request, response) => {
     const blog = new Blog(request.body)
     //console.log('request body', request.body)
 
-    const token = getTokenFrom(request)
+    const token = request.token
     console.log('token', token)
     
 
@@ -54,20 +46,6 @@ blogsRouter.get('/', async (request, response) => {
       response.status(400).json({error: error.message})
     }
 
-    
-
-   /*  try {
-      const savedBlog = await blogToAdd.save()
-      response.status(201).json(savedBlog.toJSON())
-    } catch (error) {
-      response.status(400).json({error: error.message})
-    } */
-
-    /* blog
-      .save()
-      .then(result => {
-        response.status(201).json(result)
-      }) */
   })
 
   blogsRouter.delete('/:id', async (request,response) => {
