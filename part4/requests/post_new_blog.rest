@@ -1,9 +1,9 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtheXR0YWphIiwiaWQiOiI1YzY2Zjc0NDc0YTI3MWZmMmVhYWFkOWUiLCJpYXQiOjE1NTAyNTE4NTV9.mcojeLp4O69CLC-IEv02ahBM1LJa1d6rbpwti1bIdV8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtheXR0YWphIiwiaWQiOiI1YzY2Zjc0NDc0YTI3MWZmMmVhYWFkOWUiLCJpYXQiOjE1NTAzMzkzMzJ9.t7ywTEcMEj7Giht8WzvzEkuY28ZkgEHyADvmOx9lcwA
 
 {
-    "title": "Paras blogi",
+    "title": "Uusi blogi",
     "author": "minä",
     "url": "wwww.internet.com",
     "likes": 1000

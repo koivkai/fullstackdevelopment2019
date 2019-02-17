@@ -49,13 +49,41 @@ blogsRouter.get('/', async (request, response) => {
   })
 
   blogsRouter.delete('/:id', async (request,response) => {
-    //console.log('päästiin delete kutsuun')
+    console.log('päästiin delete kutsuun')
+
+    const token = request.token
+    console.log('token ', token)
     try{
-      //console.log('request params id', request.params.id)
+      if(!token) {
+        return response.status(401).json({ error: 'token missing or invalid' })
+      }
+      const decodedToken = jwt.verify(token, process.env.SECRET)
+      console.log('decoded token', decodedToken)
+      if (!decodedToken.id) {
+        return response.status(401).json({ error: 'token missing or invalid' })
+      }
+      
+      const blogToDelete = await Blog.findById(request.params.id)
+
+      if(!blogToDelete) {
+        return response.status(404).json({error: `blog with id ${request.params.id} does not exits`})
+      }
+
+      console.log('blogToDelete', blogToDelete)
+      console.log('decodedToken', decodedToken)
+
+      if(blogToDelete.user.toString() === decodedToken.id) {
+        //console.log('request params id', request.params.id)
       await Blog.findByIdAndDelete(request.params.id)
       response.status(204).end()
+      } else {
+        response.status(403).json({error: 'You can only delete your own blogs'})
+      }
+
+      
     } catch (error) {
       console.log('something went wrong with delete')
+      response.status(500).json({error:  error.message})
     }
   })
 
