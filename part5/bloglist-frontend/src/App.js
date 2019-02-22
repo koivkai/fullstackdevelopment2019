@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import NewBlogForm from './components/NewBlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -8,6 +9,7 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -43,6 +45,7 @@ const App = () => {
 
   const loginForm = () => (
     <>
+    
     <h2>Please log in</h2>
     <form onSubmit={handleLogin}>
       <div>
@@ -70,12 +73,14 @@ const App = () => {
 
   const blogList = () => (
     <div>
+      
       <p>{user.name} logged in</p>
       <h2>blogs</h2>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
       {logOutButton()}
+      <NewBlogForm setMessage={setMessage} setBlogs={setBlogs} blogs={blogs}/>
     </div>
        
   )
@@ -90,12 +95,24 @@ const App = () => {
       log out
     </button>
   )
+
+  const messageBar = () => {
+    if(message === null) {
+      return null
+    }
+
+    return (
+      <div className='message'>
+        {message}
+      </div>
+    )
+  }
     
   
 
   return (
     <div>
-
+      {messageBar()}
       {user === null ? loginForm() : blogList()}
       
       
