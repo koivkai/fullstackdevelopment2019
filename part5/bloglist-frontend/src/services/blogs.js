@@ -31,7 +31,18 @@ const createBlog = async (title, author, url) => {
   
 }
 
+const updateBlog = async (blog) => {
+  console.log('blog', blog)
+  try {
+    const response = await axios.put(`/api/blogs/${blog.id}`, blog)
+    return response
+  } catch (error) {
+    return {error: error.message}
+  }
+}
+
 export default { 
   getAll,
-  createBlog
+  createBlog, 
+  updateBlog
 }

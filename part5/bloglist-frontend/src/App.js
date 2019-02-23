@@ -16,6 +16,7 @@ const App = () => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
     )  
+    
   }, [])
 
   useEffect(() => {
@@ -76,22 +77,24 @@ const App = () => {
     </>
   )
 
-  const blogList = () => (
-    <div>
+  const blogList = () => {
+    sortBlogsByLikes()
+    return (
+      <div>
       
-      <p>{user.name} logged in</p>
-      <h2>blogs</h2>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
-      {logOutButton()}
-      <Toggleable buttonLabel='Add blog'>
-        <NewBlogForm setMessage={setMessage} setBlogs={setBlogs} blogs={blogs}/>
-      </Toggleable>
+        <p>{user.name} logged in</p>
+        <h2>blogs</h2>
+        {blogs.map(blog =>
+          <Blog key={blog.id} blog={blog} blogs={blogs} setBlogs={setBlogs}/>
+        )}
+        {logOutButton()}
+        <Toggleable buttonLabel='Add blog'>
+          <NewBlogForm setMessage={setMessage} setBlogs={setBlogs} blogs={blogs}/>
+        </Toggleable>
       
-    </div>
-       
-  )
+      </div>
+    )
+    }
 
   const logOut = () => {
     window.localStorage.removeItem('currentUserJSON')
@@ -100,6 +103,13 @@ const App = () => {
     setTimeout(() => {
       setMessage(null)
     }, 5000)
+  }
+
+  const sortBlogsByLikes = () => {
+    //console.log('blogs before', blogs)
+    //console.log('sorting blogs')
+    blogs.sort((blogA, blogB) => (blogB.likes - blogA.likes))
+    //console.log('blogs after', blogs)
   }
 
   const logOutButton = () => (
@@ -119,7 +129,7 @@ const App = () => {
       </div>
     )
   }
-
+  
   return (
     <div>
       {messageBar()}
