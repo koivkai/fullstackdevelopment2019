@@ -3,6 +3,7 @@ import Blog from './components/Blog'
 import NewBlogForm from './components/NewBlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import Toggleable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -37,6 +38,10 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+      setMessage(`Welcome "${user.name}"  `)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
       console.log('user', user)
     } catch (exception) {
       
@@ -80,7 +85,10 @@ const App = () => {
         <Blog key={blog.id} blog={blog} />
       )}
       {logOutButton()}
-      <NewBlogForm setMessage={setMessage} setBlogs={setBlogs} blogs={blogs}/>
+      <Toggleable buttonLabel='Add blog'>
+        <NewBlogForm setMessage={setMessage} setBlogs={setBlogs} blogs={blogs}/>
+      </Toggleable>
+      
     </div>
        
   )
@@ -88,6 +96,10 @@ const App = () => {
   const logOut = () => {
     window.localStorage.removeItem('currentUserJSON')
     setUser(null)
+    setMessage(`Logged out`)
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
   }
 
   const logOutButton = () => (
@@ -107,15 +119,11 @@ const App = () => {
       </div>
     )
   }
-    
-  
 
   return (
     <div>
       {messageBar()}
-      {user === null ? loginForm() : blogList()}
-      
-      
+      {user === null ? loginForm() : blogList()}  
     </div>
   )
 }

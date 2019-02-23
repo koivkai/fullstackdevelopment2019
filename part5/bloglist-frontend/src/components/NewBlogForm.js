@@ -22,7 +22,7 @@ const NewBlogForm = (props) => {
     const addBlog = async (event) => {
         event.preventDefault()
         //console.log('event ', event)
-        //console.log('props ', props)
+        console.log('props ', props)
         const result = await BlogService.createBlog(newBlogTitle, newBlogAuthor, newBlogUrl)
         console.log('addBlog result', result)
         if(result.status === 201) {

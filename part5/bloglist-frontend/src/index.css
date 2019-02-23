@@ -6,3 +6,10 @@
     border-style: solid;
     border-radius: 5px;
 }
+
+.blog  {
+    border-style: solid;
+    border-radius: 3px;
+    border-color: rgba(135, 206, 250, 0.973);
+    font-weight: bold;
+  }
