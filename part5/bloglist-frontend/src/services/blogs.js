@@ -41,8 +41,22 @@ const updateBlog = async (blog) => {
   }
 }
 
+const deleteBlog = async (id) => {
+  const config = {
+    headers: {Authorization: userInfo.getAuthorizationString()}
+  }
+  try {
+    console.log('id in blogService delete blog', id)
+    const response = await axios.delete(`/api/blogs/${id}`, config)
+    return response
+  } catch (error) {
+    console.log('error in delete', error)
+  }
+}
+
 export default { 
   getAll,
   createBlog, 
-  updateBlog
+  updateBlog,
+  deleteBlog
 }

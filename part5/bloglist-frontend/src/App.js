@@ -94,7 +94,7 @@ const App = () => {
       
       </div>
     )
-    }
+    }   
 
   const logOut = () => {
     window.localStorage.removeItem('currentUserJSON')

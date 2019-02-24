@@ -24,10 +24,24 @@ const Blog = ({ blog, blogs, setBlogs }) => {
     
   }
 
+  const deleteBlog = async (id) => {
+    
+    try {
+      console.log('deleteBlog id', id, typeof(id))
+      const response = await BlogService.deleteBlog(id)
+    if(response) {
+      setBlogs(blogs.filter(b => b.id !== id))
+    }
+    } catch (error) {
+      console.log('error in deleteBlog', error)
+    }
+    
+  }
+
   if (showFullInfo) {
     return (
       <div className='blog' onClick={() => setShowFullinfo(!showFullInfo)}>
-        {blog.title} by {blog.author}, url: {blog.url}, likes: {blog.likes} <button onClick={(event) => {handleLike(event)}} >like</button>
+        {blog.title} by {blog.author}, url: {blog.url}, likes: {blog.likes} <button onClick={(event) => {handleLike(event)}} >like</button> <button onClick={() => deleteBlog(blog.id)}>delete </button>
       </div>
     )
   }
@@ -38,5 +52,8 @@ const Blog = ({ blog, blogs, setBlogs }) => {
   )
   
   }
+
+  
+
 
 export default Blog
