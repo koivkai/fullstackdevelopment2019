@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import BlogService from '../services/blogs'
 
-const Blog = ({ blog, blogs, setBlogs }) => {
+const Blog = ({ blog, blogs, setBlogs, user }) => {
   const [showFullInfo, setShowFullinfo] = useState(false)
 
   const handleLike = async (event) => {
@@ -39,9 +39,18 @@ const Blog = ({ blog, blogs, setBlogs }) => {
   }
 
   if (showFullInfo) {
+    console.log('user', user)
+    console.log('blog.user', blog.user)
+    if(user.id === blog.user.id) {
+      return (
+        <div className='blog' onClick={() => setShowFullinfo(!showFullInfo)}>
+          {blog.title} by {blog.author}, url: {blog.url}, likes: {blog.likes} <button onClick={(event) => {handleLike(event)}} >like</button> <button onClick={() => deleteBlog(blog.id)}>delete </button>
+        </div>
+      )
+    }
     return (
       <div className='blog' onClick={() => setShowFullinfo(!showFullInfo)}>
-        {blog.title} by {blog.author}, url: {blog.url}, likes: {blog.likes} <button onClick={(event) => {handleLike(event)}} >like</button> <button onClick={() => deleteBlog(blog.id)}>delete </button>
+        {blog.title} by {blog.author}, url: {blog.url}, likes: {blog.likes} <button onClick={(event) => {handleLike(event)}} >like</button>
       </div>
     )
   }

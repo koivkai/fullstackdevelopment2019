@@ -11,8 +11,7 @@ blogsRouter.get('/', async (request, response) => {
   
   blogsRouter.post('/', async (request, response) => {
     const blog = new Blog(request.body)
-    //console.log('request body', request.body)
-
+    console.log('blog post request ', request)
     const token = request.token
     console.log('token', token)
     
@@ -62,7 +61,7 @@ blogsRouter.get('/', async (request, response) => {
       if (!decodedToken.id) {
         return response.status(401).json({ error: 'token missing or invalid' })
       }
-      
+      console.log('request params id', request.params)
       const blogToDelete = await Blog.findById(request.params.id)
 
       if(!blogToDelete) {
@@ -74,8 +73,9 @@ blogsRouter.get('/', async (request, response) => {
 
       if(blogToDelete.user.toString() === decodedToken.id) {
         //console.log('request params id', request.params.id)
-      await Blog.findByIdAndDelete(request.params.id)
-      response.status(204).end()
+        await Blog.findByIdAndDelete(request.params.id)
+        console.log('blogi poistettiin onnistuneesti')
+        response.status(204).end()
       } else {
         response.status(403).json({error: 'You can only delete your own blogs'})
       }
@@ -97,7 +97,7 @@ blogsRouter.get('/', async (request, response) => {
 
     Blog.findByIdAndUpdate(request.params.id, blogUpdate, {new: true})
       .then(updatedBlog => {
-        response.json(updatedBlog.toJSON)
+        response.status(200).json(updatedBlog.toJSON)
       })
   })
 
