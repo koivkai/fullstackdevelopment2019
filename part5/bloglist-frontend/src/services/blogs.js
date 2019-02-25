@@ -10,25 +10,25 @@ const getAll = () => {
 
 const createBlog = async (title, author, url) => {
   const config = {
-    headers: {Authorization: userInfo.getAuthorizationString()}
+    headers: { Authorization: userInfo.getAuthorizationString() }
   }
 
   //console.log('title ', title, ' author ', author, ' url ', url, ' config ',config)
   const newBlog = {
-    "title":  title,
-    "author": author,
-    "url": url,
-    "likes": 0
+    'title':  title,
+    'author': author,
+    'url': url,
+    'likes': 0
   }
   try {
     const response = await axios.post(baseUrl, newBlog, config)
     return response
   } catch (error){
-    return {error: error.message}
+    return { error: error.message }
   }
-  
+
   //console.log('response', response)
-  
+
 }
 
 const updateBlog = async (blog) => {
@@ -37,13 +37,13 @@ const updateBlog = async (blog) => {
     const response = await axios.put(`/api/blogs/${blog.id}`, blog)
     return response
   } catch (error) {
-    return {error: error.message}
+    return { error: error.message }
   }
 }
 
 const deleteBlog = async (id) => {
   const config = {
-    headers: {Authorization: userInfo.getAuthorizationString()}
+    headers: { Authorization: userInfo.getAuthorizationString() }
   }
   try {
     console.log('id in blogService delete blog', id)
@@ -54,9 +54,9 @@ const deleteBlog = async (id) => {
   }
 }
 
-export default { 
+export default {
   getAll,
-  createBlog, 
+  createBlog,
   updateBlog,
   deleteBlog
 }

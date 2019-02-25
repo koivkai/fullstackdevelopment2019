@@ -8,7 +8,7 @@ const Blog = ({ blog, blogs, setBlogs, user }) => {
   const handleLike = async (event) => {
     event.stopPropagation()
     //console.log('blog ennen like ', blog)
-    blog.likes = blog.likes +1;
+    blog.likes = blog.likes +1
     //console.log('blog after like', blog)
     try {
       const result = await BlogService.updateBlog(blog)
@@ -21,22 +21,22 @@ const Blog = ({ blog, blogs, setBlogs, user }) => {
     } catch (error) {
       console.log('error', error)
     }
-    
-    
+
+
   }
 
   const deleteBlog = async (id) => {
-    
+
     try {
       console.log('deleteBlog id', id, typeof(id))
       const response = await BlogService.deleteBlog(id)
-    if(response) {
-      setBlogs(blogs.filter(b => b.id !== id))
-    }
+      if(response) {
+        setBlogs(blogs.filter(b => b.id !== id))
+      }
     } catch (error) {
       console.log('error in deleteBlog', error)
     }
-    
+
   }
 
   if (showFullInfo) {
@@ -57,20 +57,20 @@ const Blog = ({ blog, blogs, setBlogs, user }) => {
   }
   return (
     <div className='blog' onClick={() => setShowFullinfo(!showFullInfo)}>
-    {blog.title} by {blog.author}
+      {blog.title} by {blog.author}
     </div>
   )
-  
-  }
 
-  Blog.propTypes = {
-    blog: PropTypes.object.isRequired,
-    blogs: PropTypes.array.isRequired,
-    setBlogs: PropTypes.func.isRequired,
-    user: PropTypes.object.isRequired
-  }
+}
 
-  
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  blogs: PropTypes.array.isRequired,
+  setBlogs: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired
+}
+
+
 
 
 export default Blog

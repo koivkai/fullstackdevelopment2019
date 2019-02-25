@@ -15,8 +15,8 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
-    
+    )
+
   }, [])
 
   useEffect(() => {
@@ -44,19 +44,19 @@ const App = () => {
         setMessage(null)
       }, 5000)
       console.log('user', user)
-    } catch (exception) {
-      
+    } catch (error) {
+      console.log('error', error)
     }
   }
 
   const loginForm = () => (
     <>
-    
+
     <h2>Please log in</h2>
     <form onSubmit={handleLogin}>
       <div>
         käyttäjätunnus
-          <input
+        <input
           type="text"
           value={username}
           name="Username"
@@ -65,7 +65,7 @@ const App = () => {
       </div>
       <div>
         salasana
-          <input
+        <input
           type="password"
           value={password}
           name="Password"
@@ -73,7 +73,7 @@ const App = () => {
         />
       </div>
       <button type="submit">kirjaudu</button>
-    </form>      
+    </form>
     </>
   )
 
@@ -82,7 +82,7 @@ const App = () => {
 
     return (
       <div>
-      
+
         <p>{user.name} logged in</p>
         <h2>blogs</h2>
         {blogs.map(blog =>
@@ -92,15 +92,15 @@ const App = () => {
         <Toggleable buttonLabel='Add blog'>
           <NewBlogForm setMessage={setMessage} setBlogs={setBlogs} blogs={blogs}/>
         </Toggleable>
-      
+
       </div>
     )
-    }   
+  }
 
   const logOut = () => {
     window.localStorage.removeItem('currentUserJSON')
     setUser(null)
-    setMessage(`Logged out`)
+    setMessage('Logged out')
     setTimeout(() => {
       setMessage(null)
     }, 5000)
@@ -130,11 +130,11 @@ const App = () => {
       </div>
     )
   }
-  
+
   return (
     <div>
       {messageBar()}
-      {user === null ? loginForm() : blogList()}  
+      {user === null ? loginForm() : blogList()}
     </div>
   )
 }
