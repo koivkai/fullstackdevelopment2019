@@ -41,6 +41,7 @@ const Blog = ({ blog, blogs, setBlogs, user }) => {
 
   if (showFullInfo) {
     console.log('user', user)
+    console.log('blog', blog)
     console.log('blog.user', blog.user)
     if(user.id === blog.user.id) {
       return (
