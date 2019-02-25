@@ -4,12 +4,15 @@ import NewBlogForm from './components/NewBlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Toggleable from './components/Togglable'
+import  { useField } from './hooks'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  //const [username, setUsername] = useState('')
+  const username = useField('text')
+  //const [password, setPassword] = useState('')
+  const password = useField('text')
   const [message, setMessage] = useState(null)
 
   useEffect(() => {
@@ -29,16 +32,17 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
+
     try {
       const user = await loginService.login({
-        username, password,
+        username: username.value, password: password.value,
       })
 
       window.localStorage.setItem('currentUserJSON', JSON.stringify(user))
 
       setUser(user)
-      setUsername('')
-      setPassword('')
+      //setUsername('')
+      //setPassword('')
       setMessage(`Welcome "${user.name}"  `)
       setTimeout(() => {
         setMessage(null)
@@ -57,19 +61,13 @@ const App = () => {
       <div>
         käyttäjätunnus
         <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
+          {...username}
         />
       </div>
       <div>
         salasana
         <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
+          {...password}
         />
       </div>
       <button type="submit">kirjaudu</button>
