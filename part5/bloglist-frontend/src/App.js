@@ -12,7 +12,7 @@ const App = () => {
   //const [username, setUsername] = useState('')
   const username = useField('text')
   //const [password, setPassword] = useState('')
-  const password = useField('text')
+  const password = useField('password')
   const [message, setMessage] = useState(null)
 
   useEffect(() => {
