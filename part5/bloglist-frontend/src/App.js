@@ -41,8 +41,8 @@ const App = () => {
       window.localStorage.setItem('currentUserJSON', JSON.stringify(user))
 
       setUser(user)
-      //setUsername('')
-      //setPassword('')
+      username.reset()
+      password.reset()
       setMessage(`Welcome "${user.name}"  `)
       setTimeout(() => {
         setMessage(null)
