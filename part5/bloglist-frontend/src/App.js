@@ -79,6 +79,7 @@ const App = () => {
 
   const blogList = () => {
     sortBlogsByLikes()
+
     return (
       <div>
       
