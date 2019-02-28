@@ -30,6 +30,25 @@ const App = () => {
     })
   }
 
+  const statistics = () => {
+    let totalReviews = store.getState().good + store.getState().ok + store.getState().bad
+    let pointTotal = 1 * store.getState().good + store.getState().bad * -1
+    let average = pointTotal / totalReviews
+    let posivePercentage = (store.getState().good / totalReviews) * 100
+
+    return (
+      <div>
+        <h3>Statistics</h3>
+        <ul>
+          <li>Total: {totalReviews}</li>
+          <li>Average: {average}</li>
+          <li>Postive: {posivePercentage} %</li>
+        </ul>
+        
+      </div>
+    )
+  }
+
   return (
     <div>
       <button onClick={good}>hyvä</button> 
@@ -39,6 +58,7 @@ const App = () => {
       <div>hyvä {store.getState().good}</div>
       <div>neutraali {store.getState().ok}</div>
       <div>huono {store.getState().bad}</div>
+      {statistics()}
     </div>
   )
 }
