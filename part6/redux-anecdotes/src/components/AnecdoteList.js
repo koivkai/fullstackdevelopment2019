@@ -5,12 +5,17 @@ import {createSetNotification, createResetNotification} from '../reducers/notifi
 const AnecdoteList = (props) => {
     const store = props.store
     const anecdotes = props.store.getState().anecdotes
-    anecdotes.sort((a,b) => (b.votes - a.votes))
+    const filteredAnecdotes = anecdotes.filter((anecdote) => {
+        const anecdoteLowercase = anecdote.content.toLowerCase()
+        const filterLowercase = store.getState().filter.toLowerCase()
+        return anecdoteLowercase.includes(filterLowercase) 
+    })
+    filteredAnecdotes.sort((a,b) => (b.votes - a.votes))
 
     const vote = (id) => {
         store.dispatch(createVoteAction(id))
 
-        const votedAnecdote = anecdotes.find(anecdote => anecdote.id === id)
+        const votedAnecdote = filteredAnecdotes.find(anecdote => anecdote.id === id)
 
         store.dispatch(createSetNotification(`voted "${votedAnecdote.content}"`))
         setTimeout(() => {
@@ -20,7 +25,7 @@ const AnecdoteList = (props) => {
     
     return (
       <div>
-        {anecdotes.map(anecdote =>
+        {filteredAnecdotes.map(anecdote =>
         <div key={anecdote.id}>
           <div>
             {anecdote.content}
