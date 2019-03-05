@@ -1,5 +1,6 @@
 import React from 'react'
 import { createAnecdote } from '../reducers/anecdoteReducer'
+import {createSetNotification, createResetNotification} from '../reducers/notificationReducer'
 
 const AnecdoteForm = (props) => {
   const store = props.store
@@ -9,6 +10,11 @@ const AnecdoteForm = (props) => {
     const newAnecdote = event.target.newAnecdote.value
     store.dispatch(createAnecdote(newAnecdote))
     event.target.newAnecdote.value = ''
+
+    store.dispatch(createSetNotification(`Added ${newAnecdote}`))
+    setTimeout(() => {
+      store.dispatch(createResetNotification())
+    },5000)
   }
   
   return (
