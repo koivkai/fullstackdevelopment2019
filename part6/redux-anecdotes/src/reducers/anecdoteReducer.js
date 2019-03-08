@@ -21,8 +21,8 @@ const reducer = (state = initialState, action) => {
       voted.votes = voted.votes +1
       return state.map(anecdote => anecdote.id === voted.id ? voted : anecdote)
     case 'ADD':
-      const newAnecdoteObject = asObject(action.anecdote)
-      return state.concat(newAnecdoteObject)
+      const newAnecdote = action.anecdote
+      return state.concat(newAnecdote)
     case 'INITIALIZE':
       return action.data  
     default:
@@ -33,6 +33,7 @@ const reducer = (state = initialState, action) => {
 }
 
 export const createAnecdote = (newAnecdote) => {
+  //console.log('newAnecdote', newAnecdote)
   return {
     type:'ADD', anecdote: newAnecdote
   }
