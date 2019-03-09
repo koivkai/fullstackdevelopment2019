@@ -1,6 +1,6 @@
 import React from 'react'
 import { createAnecdote } from '../reducers/anecdoteReducer'
-import {createSetNotification, createResetNotification} from '../reducers/notificationReducer'
+import {createSetNotification } from '../reducers/notificationReducer'
 import { connect } from 'react-redux'
 
 const AnecdoteForm = (props) => {
@@ -9,12 +9,7 @@ const AnecdoteForm = (props) => {
     event.preventDefault()
     const newAnecdoteContent = event.target.newAnecdote.value
     props.createAnecdote(newAnecdoteContent)
-    //console.log('newAnecdote', newAnecdote)
-
-    props.createSetNotification(`Added ${newAnecdoteContent}`)
-    setTimeout(() => {
-      props.createResetNotification()
-    },5000)
+    props.createSetNotification(`Added ${newAnecdoteContent}`, 5000)
   }
   
   return (
@@ -30,8 +25,7 @@ const AnecdoteForm = (props) => {
 
 const mapDispatchToProps = {
   createAnecdote,
-  createSetNotification,
-  createResetNotification
+  createSetNotification
 }
 
 export default connect(null, mapDispatchToProps)(AnecdoteForm)
